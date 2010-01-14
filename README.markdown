@@ -36,7 +36,8 @@ Now go build something cool
  1. Edit `setup.py`, enter your sweet new plugin name and details.
 
  2. Rename `CodaPluginSkeleton.py` (and the class inside) to match your plugin
-    name. Be sure to change CodaPluginSkeleton's plugin_name variable as well.
+    name. Be sure to change `CodaPluginSkeleton`'s `plugin_name` variable as
+    well.
 
  3. Edit `src/Contents/Resources/English.lproj/PluginActions.plist` and add your
     actions.
