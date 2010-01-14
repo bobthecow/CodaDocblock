@@ -12,10 +12,6 @@ import os
 # You will need to name your plugin something different
 plugin_name = 'Coda Plugin Skeleton'
 
-# Rename your plugin class and the file it's in
-#  ...while you're there, be sure to change the plugin_name class variable.
-plugin_class_file = 'CodaPluginSkeleton.py'
-
 # Update this info by hand; defines the required Info.plist elements
 info = dict(
     CFBundleVersion = '0.1',
@@ -55,7 +51,7 @@ for root, dirs, filenames in os.walk(includes_dir):
 # Here's the guts of the setup call
 setup(
     name = plugin_name,
-    plugin = [plugin_class_file],
+    plugin = ['CodaPlugin.py'],
     data_files = includes,
     options = dict(py2app = dict(
         extension = '.codaplugin',
