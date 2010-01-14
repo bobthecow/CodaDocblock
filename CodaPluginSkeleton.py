@@ -1,8 +1,7 @@
 '''
-Text Editor Actions for Coda
+Coda Plugin Skeleton
 
-A collection of Python scripts that enable useful actions
-from Textmate into Coda
+A poorly named framework for writing Cocoa plugins for Coda using Python.
 
 Copyright (c) 2009 Ian Beck
 
@@ -34,23 +33,26 @@ import objc
 NSObject = objc.lookUpClass('NSObject')
 CodaPlugIn = objc.protocolNamed('CodaPlugIn')
 
-class TEAforCoda(NSObject, CodaPlugIn):
+class CodaPluginSkeleton(NSObject, CodaPlugIn):
     '''
     Initializes the menu items and is responsible for directing
     actions to the appropriate class
     '''
     
+	# AT A MINIMUM you must change this line:
+    plugin_name = 'Coda Plugin Skeleton'
+    
     def initWithPlugInController_bundle_(self, controller, bundle):
         '''Required method; run when the plugin is loaded'''
-        self = super(TEAforCoda, self).init()
+        self = super(self.__class__, self).init()
         if self is None: return None
         
         defaults = NSUserDefaults.standardUserDefaults()
         # Set up default action set
         defaults.registerDefaults_(NSDictionary.dictionaryWithContentsOfFile_(
-            bundle.pathForResource_ofType_('TextActions', 'plist')
+            bundle.pathForResource_ofType_('PluginActions', 'plist')
         ))
-        ns_actions = defaults.dictionaryForKey_('TEATextActions')
+        ns_actions = defaults.dictionaryForKey_('PluginActions')
         actions = dict(
             [str(arg), value] \
             for arg, value in ns_actions.iteritems()
@@ -95,7 +97,7 @@ class TEAforCoda(NSObject, CodaPlugIn):
     
     def name(self):
         '''Required method; returns the name of the plugin'''
-        return 'TEA for Coda'
+        return self.plugin_name
     
     def act_(self, sender):
         '''
@@ -111,7 +113,7 @@ class TEAforCoda(NSObject, CodaPlugIn):
     
     def register_action(self, controller, action, title):
         if 'action' not in action:
-            NSLog('TEA: module missing `action` entry')
+            NSLog('%s: module missing `action` entry' % self.name())
             return False
         # Required items
         actionname = action['action']
@@ -133,5 +135,5 @@ class TEAforCoda(NSObject, CodaPlugIn):
             'act:',
             rep,
             shortcut,
-            'TEA for Coda'
+            self.name()
         )
