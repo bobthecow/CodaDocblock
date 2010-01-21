@@ -1,5 +1,5 @@
 Coda Plugin Skeleton
---------------------
+====================
 
 Coda Plugin Skeleton is a poorly named framework for writing Cocoa plugins for
 [Coda][1] using Python.
@@ -13,7 +13,7 @@ menu generation, etc.
    [2]: http://onecrayon.com/tea/coda/
 
 Building from source
-====================
+--------------------
 
 In order to get anything useful out of Coda Plugin Skeleton, you will need to
 download and build the source:
@@ -31,7 +31,7 @@ internal files so that you don't have to rebuild the plugin to try out
 changes (you'll still need to relaunch Coda between changes, though).
 
 Now go build something cool
-===========================
+---------------------------
 
  1. Edit `setup.py`, enter your sweet new plugin name and details.
 
