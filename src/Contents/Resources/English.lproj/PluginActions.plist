@@ -4,28 +4,32 @@
 <dict>
 	<key>PluginActions</key>
 	<dict>
-		<key>Hello World</key>
+		<key>Generate Docblock</key>
 		<dict>
 			<key>action</key>
-			<string>HelloWorld</string>
+			<string>GenerateDocblock</string>
 			<key>shortcut</key>
-			<string>~^@h</string>
+			<string>^$d</string>
 		</dict>
-		<key>Goodbye Cruel World</key>
+		<key>Generate PHP Docblock</key>
 		<dict>
 			<key>action</key>
-			<string>HelloWorld</string>
+			<string>GenerateDocblock</string>
 			<key>options</key>
 			<dict>
-				<key>message</key>
-				<string>Goodbye</string>
-				<key>replace</key>
-				<true/>
+				<key>lang</key>
+				<string>php</string>
 			</dict>
-			<key>shortcut</key>
-			<string>~^@$h</string>
- 			<key>submenu</key>
- 			<string>See Also</string>
+		</dict>
+		<key>Generate Python Docblock</key>
+		<dict>
+			<key>action</key>
+			<string>GenerateDocblock</string>
+			<key>options</key>
+			<dict>
+				<key>lang</key>
+				<string>python</string>
+			</dict>
 		</dict>
 	</dict>
 </dict>
