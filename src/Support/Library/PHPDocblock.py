@@ -8,9 +8,9 @@ class PHPDocblock(Docblock):
     opt = {
         'line_ending': '\n',
         
-        'prefix':  '## ',
-        'infix':   '#  ',
-        'suffix':  None,
+        'prefix':  '/**',
+        'infix':   ' * ',
+        'suffix':  ' */',
         'command': '@',
         
         # docblock formatting definitions for other languages besides PHP...
@@ -162,7 +162,8 @@ class PHPDocblock(Docblock):
         return self.opt['line_ending'].join(ret)
     
     def varValueCallback(self, s):
-        s = s.strip()
+        if s: s = s.strip()
+        
         if s:
             ret = "(default value: %s)%s%s" % (s, self.opt['line_ending'], self.opt['line_ending'])
         else:
