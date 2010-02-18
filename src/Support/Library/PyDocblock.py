@@ -8,26 +8,10 @@ class PyDocblock(Docblock):
     opt = {
         'line_ending': '\n',
         
-        'prefix':  '/**',
-        'infix':   ' * ',
-        'suffix':  ' */',
+        'prefix':  '## ',
+        'infix':   '#  ',
+        'suffix':  None,
         'command': '@',
-        
-        # docblock formatting definitions for other languages besides PHP...
-        # keep these around for laters.
-#         'prefix':  '/*!',
-#         'infix':   ' * ',
-#         'suffix':  ' */',
-#         
-#         'prefix':  '///',
-#         'infix':   '///',
-#         'suffix':  '///',
-#         
-#         'prefix':  '//!',
-#         'infix':   '//!',
-#         'suffix':  '//!',
-#         
-#         'command': '\\',
         
         'signatures': {
             'function': {
