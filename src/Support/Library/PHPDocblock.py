@@ -34,7 +34,7 @@ class PHPDocblock(Docblock):
                 'pattern': '^(?P<whitespace>\s*)(?:(?:(?P<abstract>abstract)|(?P<final>final)|(?P<static>static)|(?P<access>private|public|protected))\s+)*function\s*&?(?P<name>[-a-zA-Z0-9_]+)\s*\((?P<params>.*)\)\s*(?:{.*}?|;)?\s*$',
                 'template':
                     """
-                    %name% function.
+                    $$IP$$%name% function$$.
                     
                     %access%
                     %abstract%
@@ -56,7 +56,7 @@ class PHPDocblock(Docblock):
                 'pattern': '^(?P<whitespace>\s*)(?:(?:(?:(?P<abstract>abstract)|(?P<final>final)|(?P<static>static))\s+)*)class\s+(?P<name>[-a-zA-Z0-9_]+)(?:\s+extends\s+(?P<extends>[-a-zA-Z0-9_]+))?(?:\s+implements\s+(?P<implements>[-a-zA-Z0-9_,\s]+))?',
                 'template':
                     """
-                    %name% class.
+                    $$IP$$%name% class$$.
                     
                     %abstract%
                     %static%
@@ -78,7 +78,7 @@ class PHPDocblock(Docblock):
                 'pattern': '^(?P<whitespace>\s*)interface\s+(?P<name>[-a-zA-Z0-9_]+)(?:\s+extends\s+(?P<extends>[-a-zA-Z0-9_]+))?',
                 'template':
                      """
-                     %name% interface.
+                     $$IP$$%name% interface$$.
                      
                      %extends%
                      """,
@@ -91,7 +91,7 @@ class PHPDocblock(Docblock):
                 'pattern': '(?P<whitespace>\s*)(?:(?:(?P<abstract>abstract)|(?P<static>static)|(?P<final>final)|(?P<access>private|public|protected))\s+)*(?:var\s+)?\$(?P<name>[-a-zA-Z0-9_]+)(?:\s*=\s*(?P<value>[^;]+);)?',
                 'template':
                     """
-                    %name%
+                    $$IP$$%name%$$
                     
                     %value%
                     %access%

@@ -2,6 +2,7 @@
 
 import tea_actions as tea
 import line_actions as line
+import cp_actions as cp
 from Docblock import Docblock
 
 def act(controller, bundle, options):
@@ -34,7 +35,10 @@ def act(controller, bundle, options):
     while tries_left and not text.strip():
         text, target_range = line.get_line_after_and_range(context, target_range)
         
-        if text is None: return # we're at the end of the document?
+        if text is None:
+            # we're at the end of the document?
+            cp.beep()
+            return
         
         tries_left -= 1
     
@@ -43,12 +47,7 @@ def act(controller, bundle, options):
     d.setLineEnding(tea.get_line_ending(context))
     docblock = d.doc(text)
     
-    selection = None
-    
     if docblock:
-        if selection is None:
-            tea.insert_text(context, docblock, insert_range)
-        else:
-            select_range = tea.new_range(insert_range.location + selection.location, selection.length)
-            tea.insert_text_and_select(context, docblock, insert_range, select_range)
-
+        cp.insert_text_with_insertion_point(context, docblock, insert_range)
+    else:
+        cp.beep()
