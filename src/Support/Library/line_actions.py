@@ -10,10 +10,6 @@ def is_line_ending(content, index, line_ending):
     end = index + len(line_ending)
     return len(content) >= end and content[index:end] == line_ending
 
-def end_is_line_ending(content, line_ending):
-    '''Convenience function for checking the last characters of a string against the line_ending'''
-    return is_line_ending(content, len(content) - len(line_ending), line_ending)
-
 def get_line_before(context, range = None):
     line, line_range = get_line_before_and_range(context, range)
     return line
@@ -74,7 +70,7 @@ def get_line_after_and_range(context, range = None):
     
     return tea.get_selection(context, line_range), line_range
 
-def get_line_range(context, range = None):
+def lines_and_range(context, range = None):
     '''Get the range of the full lines containing the current (or supplied) range'''
     line_ending = tea.get_line_ending(context)
     len_line_ending = len(line_ending)
