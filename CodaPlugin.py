@@ -43,6 +43,9 @@ class CodaPluginSkeleton(NSObject, CodaPlugIn):
 	# AT A MINIMUM you must change this line:
     plugin_name = 'Coda Plugin Skeleton'
     
+    # Change this to disable automatic sorting of menu items:
+    sort_menu_items = True
+    
     def initWithPlugInController_bundle_(self, controller, bundle):
         '''Required method; run when the plugin is loaded'''
         self = super(self.__class__, self).init()
@@ -79,13 +82,15 @@ class CodaPluginSkeleton(NSObject, CodaPlugIn):
         for menu in submenu_keys:
             menu_actions = submenus[menu]
             temp_keys = menu_actions.keys()
-            temp_keys.sort()
+            if self.sort_menu_items:
+                temp_keys.sort()
             for title in temp_keys:
                 action = menu_actions[title]
                 self.register_action(controller, action, title)
         # Process the root level items
         keys = rootlevel.keys()
-        keys.sort()
+        if self.sort_menu_items:
+            keys.sort()
         for title in keys:
             action = rootlevel[title]
             self.register_action(controller, action, title)
