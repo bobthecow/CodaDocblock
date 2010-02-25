@@ -28,6 +28,7 @@ import sys
 import os.path
 
 from Foundation import *
+from AppKit import *
 import objc
 
 NSObject = objc.lookUpClass('NSObject')
@@ -94,6 +95,22 @@ class CodaPluginSkeleton(NSObject, CodaPlugIn):
         sys.path.append(os.path.join(bundle.bundlePath(), "Support/Library"))
         
         return self
+    
+    def validateMenuItem_(self, sender):
+        '''
+        Imports the module, initializes the class, and runs its act() method
+        '''
+        actionname = sender.representedObject().objectForKey_('actionname')
+        mod = __import__(actionname)
+        if actionname in mod.__dict__:
+            target = mod.__dict__[actionname].alloc().init()
+        else:
+            target = mod
+        
+        if 'showmenu' in target.__dict__:
+            return target.showmenu(self.controller, self.bundle, sender.representedObject().objectForKey_('options'))
+        else:
+            return True
     
     def name(self):
         '''Required method; returns the name of the plugin'''
