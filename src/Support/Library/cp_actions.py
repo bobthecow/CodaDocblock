@@ -1,7 +1,6 @@
 '''Utility functions for working with Coda Plugin Skeleton'''
 
-import tea_actions as tea
-import line_actions as line
+from tea_actions import *
 from AppKit import *
 
 def insert_text_with_insertion_point(context, text, range):
