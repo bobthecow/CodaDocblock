@@ -15,7 +15,7 @@ def is_line_ending(content, index, line_ending):
 
 def end_is_line_ending(content, line_ending):
     '''Convenience function for checking the last characters of a string against the line_ending'''
-    return is_line_ending(content, len(content) - len(line_ending), line_ending)
+    return content.endswith(line_ending)
 
 
 def get_line_before(context, range = None):
