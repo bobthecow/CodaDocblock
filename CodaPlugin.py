@@ -8,6 +8,7 @@ import sys
 import os.path
 
 from Foundation import *
+from AppKit import *
 import objc
 
 NSObject = objc.lookUpClass('NSObject')
@@ -21,6 +22,9 @@ class Docblock(NSObject, CodaPlugIn):
     
 	# AT A MINIMUM you must change this line:
     plugin_name = 'Docblock'
+    
+    # Change this to disable automatic sorting of menu items:
+    sort_menu_items = True
     
     def initWithPlugInController_bundle_(self, controller, bundle):
         '''Required method; run when the plugin is loaded'''
@@ -58,13 +62,15 @@ class Docblock(NSObject, CodaPlugIn):
         for menu in submenu_keys:
             menu_actions = submenus[menu]
             temp_keys = menu_actions.keys()
-            temp_keys.sort()
+            if self.sort_menu_items:
+                temp_keys.sort()
             for title in temp_keys:
                 action = menu_actions[title]
                 self.register_action(controller, action, title)
         # Process the root level items
         keys = rootlevel.keys()
-        keys.sort()
+        if self.sort_menu_items:
+            keys.sort()
         for title in keys:
             action = rootlevel[title]
             self.register_action(controller, action, title)
@@ -74,6 +80,22 @@ class Docblock(NSObject, CodaPlugIn):
         sys.path.append(os.path.join(bundle.bundlePath(), "Support/Library"))
         
         return self
+    
+    def validateMenuItem_(self, sender):
+        '''
+        Imports the module, initializes the class, and runs its act() method
+        '''
+        actionname = sender.representedObject().objectForKey_('actionname')
+        mod = __import__(actionname)
+        if actionname in mod.__dict__:
+            target = mod.__dict__[actionname].alloc().init()
+        else:
+            target = mod
+        
+        if 'showmenu' in target.__dict__:
+            return target.showmenu(self.controller, self.bundle, sender.representedObject().objectForKey_('options'))
+        else:
+            return True
     
     def name(self):
         '''Required method; returns the name of the plugin'''
