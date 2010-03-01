@@ -30,6 +30,12 @@
 				<key>lang</key>
 				<string>python</string>
 			</dict>
+			<key>shortcut</key>
+			<string>~^@$h</string>
+ 			<key>submenu</key>
+ 			<string>See Also</string>
+			<key>requireSelection</key>
+			<true/>
 		</dict>
 	</dict>
 </dict>

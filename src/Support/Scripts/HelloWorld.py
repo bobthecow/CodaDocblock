@@ -1,6 +1,6 @@
 '''A Hello World action for the Coda Plugin Skeleton'''
 
-import tea_actions as tea
+import cp_actions as cp
 
 def act(controller, bundle, options):
     '''
@@ -11,14 +11,14 @@ def act(controller, bundle, options):
     Setting replace=True replace the current selection instead of inserting
     '''
     
-    context = tea.get_context(controller)
+    context = cp.get_context(controller)
     
-    message = tea.get_option(options, 'message', 'Hello World')
-    replace_selection = tea.get_option(options, 'replace', False)
+    message = cp.get_option(options, 'message', 'Hello World')
+    replace_selection = cp.get_option(options, 'replace', False)
     
-    range = tea.get_range(context)
+    range = cp.get_range(context)
     
     if not replace_selection:
-        range = tea.new_range(range.location, 0)
+        range = cp.new_range(range.location, 0)
     
-    tea.insert_text(context, message, range)
+    cp.insert_text(context, message, range)
