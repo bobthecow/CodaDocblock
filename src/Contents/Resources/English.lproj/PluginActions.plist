@@ -10,6 +10,15 @@
 			<string>HelloWorld</string>
 			<key>shortcut</key>
 			<string>~^@h</string>
+			<!-- set validateMenuItem to true if your action provides a 'showmenu' validation function -->
+			<key>validateMenuItem</key>
+			<false/>
+			<!-- set requireDocument to false if your action can be executed without an active TextView -->
+			<key>requireDocument</key>
+			<true/>
+			<!-- set requireSelection to true if your action requires text selection -->
+			<key>requireSelection</key>
+			<false/>
 		</dict>
 		<key>Goodbye Cruel World</key>
 		<dict>
@@ -26,6 +35,8 @@
 			<string>~^@$h</string>
  			<key>submenu</key>
  			<string>See Also</string>
+			<key>requireSelection</key>
+			<true/>
 		</dict>
 	</dict>
 </dict>
