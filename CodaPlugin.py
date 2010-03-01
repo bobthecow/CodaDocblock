@@ -103,19 +103,35 @@ class CodaPluginSkeleton(NSObject, CodaPlugIn):
     
     def validateMenuItem_(self, sender):
         '''
-        Imports the module, initializes the class, and runs its act() method
+        Validate the menu item for an action.
         '''
-        actionname = sender.representedObject().objectForKey_('actionname')
-        mod = __import__(actionname)
-        if actionname in mod.__dict__:
-            target = mod.__dict__[actionname].alloc().init()
-        else:
-            target = mod
         
-        if 'showmenu' in target.__dict__:
-            return target.showmenu(self.controller, self.bundle, sender.representedObject().objectForKey_('options'))
-        else:
-            return True
+        # Make sure there's a focused TextView
+        # NOTE: Panic still hands us a 'focused' TextView when the Sites tab is open, so this isn't always reliable...
+        if sender.representedObject().objectForKey_('requireDocument') and self.controller.focusedTextView_(sender) is None:
+            return False
+        
+        # Make sure the user has selected something...
+        if sender.representedObject().objectForKey_('requireSelection'):
+            textView = self.controller.focusedTextView_(sender)
+            if textView is None or textView.selectedRange().length is 0:
+                return False
+        
+        # Allow this action to validate its own menu item.
+        # NOTE: This can make a submenu really slow the first time it is used.
+        if sender.representedObject().objectForKey_('validateMenuItem'):
+            sender.representedObject().objectForKey_('actionname')
+            actionname = sender.representedObject().objectForKey_('actionname')
+            mod = __import__(actionname)
+            if actionname in mod.__dict__:
+                target = mod.__dict__[actionname].alloc().init()
+            else:
+                target = mod
+            
+            if 'showmenu' in target.__dict__:
+                return target.showmenu(self.controller, self.bundle, sender.representedObject().objectForKey_('options'))
+        
+        return True
     
     def name(self):
         '''Required method; returns the name of the plugin'''
@@ -137,18 +153,31 @@ class CodaPluginSkeleton(NSObject, CodaPlugIn):
         if 'action' not in action:
             NSLog('%s: module missing `action` entry' % self.name())
             return False
+        
         # Required items
         actionname = action['action']
+        
         # Set up defaults
         submenu = action['submenu'] if 'submenu' in action else None
         shortcut = action['shortcut'] if 'shortcut' in action else ''
         options = action['options'] if 'options' in action else NSDictionary.dictionary()
         
+        # Menu item validation.
+        requireDocument = action['requireDocument'] if 'requireDocument' in action else True
+        requireSelection = action['requireSelection'] if 'requireSelection' in action else False
+        validateMenuItem = action['validateMenuItem'] if 'validateMenuItem' in action else False
+        
         rep = NSDictionary.dictionaryWithObjectsAndKeys_(
             actionname,
             'actionname',
             options,
-            'options'
+            'options',
+            validateMenuItem,
+            'validateMenuItem',
+            requireDocument,
+            'requireDocument',
+            requireSelection,
+            'requireSelection',
         )
         controller.registerActionWithTitle_underSubmenuWithTitle_target_selector_representedObject_keyEquivalent_pluginName_(
             title,
