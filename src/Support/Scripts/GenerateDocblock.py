@@ -2,7 +2,8 @@
 
 import tea_actions as tea
 import line_actions as line
-import Docblock
+import cp_actions as cp
+from Docblock import Docblock
 
 def act(controller, bundle, options):
     '''
@@ -14,20 +15,16 @@ def act(controller, bundle, options):
     
     context = tea.get_context(controller)
 
-    lang = tea.get_option(options, 'lang', 'auto').lowercase()
+    lang = tea.get_option(options, 'lang', 'auto').lower()
     
     # get the file extension so we can guess the language.
     if lang == 'auto':
         path = context.path()
-        if path is None:
-            return
-        else:
+        if path is not None:
             pos = path.rfind('.')
-            if pos == -1:
-                return
-            else:
+            if pos != -1:
                 lang = path[pos+1:]
-
+    
     d = Docblock.get(lang)
     
     # get the current line
@@ -36,18 +33,21 @@ def act(controller, bundle, options):
     # keep going until we find a non-empty line to document (up to X lines below the current line)
     tries_left = 3
     while tries_left and not text.strip():
-        text, target_range = line.get_line_after(context, target_range)
+        text, target_range = line.get_line_after_and_range(context, target_range)
+        
+        if text is None:
+            # we're at the end of the document?
+            cp.beep()
+            return
+        
         tries_left -= 1
     
-    insert_range = tea.new_range(target_range.start, 0)
+    insert_range = tea.new_range(target_range.location, 0)
     
-    d.setLineEnding(t.get_line_ending(context))
-    docblock, selection = d.doc(text)
+    d.setLineEnding(tea.get_line_ending(context))
+    docblock = d.doc(text)
     
     if docblock:
-        if selection is None:
-            tea.insert_text(context, docblock, insert_range)
-        else:
-            select_range = tea.new_range(insert_range.start + selection.start, selection.length)
-            tea.insert_text_and_select(context, docblock, insert_range, select_range)
-
+        cp.insert_text_with_insertion_point(context, docblock, insert_range)
+    else:
+        cp.beep()

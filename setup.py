@@ -10,13 +10,13 @@ import os
 # === CONFIG ===
 
 # You will need to name your plugin something different
-plugin_name = 'Coda Plugin Skeleton'
+plugin_name = 'Docblock'
 
 # Update this info by hand; defines the required Info.plist elements
 info = dict(
     CFBundleVersion = '0.1',
-    CFBundleIdentifier = 'com.justinhileman.codaplugin',
-    NSHumanReadableCopyright = '(c) 2009 Ian Beck under the MIT license',
+    CFBundleIdentifier = 'com.justinhileman.docblock',
+    NSHumanReadableCopyright = '(c) 2010 Justin Hileman',
     CodaPlugInMinimumAPIVersion = '4',
 )
 

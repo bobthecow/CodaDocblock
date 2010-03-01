@@ -2,14 +2,21 @@
 
 import re
 
-from PHPDocblock import PHPDocblock
-# from PyDocblock import PyDocblock
-# from JSDocblock import JSDocblock
+# These imports are actually done inside the Docblock class to fix a circular reference.
+#from AutoDocblock import AutoDocblock
+#from PHPDocblock import PHPDocblock
+#from PyDocblock import PyDocblock
+#from JSDocblock import JSDocblock
+
 
 class Docblock(object):
     """
     Generic Docblock generator class
     """
+    
+    opt = {
+        'line_ending': '\n',
+    }
     
     @staticmethod
     def get(ext):
@@ -22,7 +29,12 @@ class Docblock(object):
         Hmmm... Mebbe I'll poke around and see if I can figure that out from the context somehow.
         """
         
-        ext = ext.lowercase()
+        from AutoDocblock import AutoDocblock
+        from PHPDocblock import PHPDocblock
+        # from PyDocblock import PyDocblock
+        # from JSDocblock import JSDocblock
+        
+        if ext: ext = ext.lower()
         
         if ext in ('php', 'phtml', 'php3', 'php4', 'php5', 'ph3', 'ph4', 'ph5', 'phps', 'module', 'inc', 'install',):
             return PHPDocblock()
@@ -33,7 +45,8 @@ class Docblock(object):
 #         elif ext in ('smarty', 'tpl',):
 #             return SmartyDocblock()
         else:
-            return None
+            # at this point we'll try just about anything...
+            return AutoDocblock()
     
     def setLineEnding(self, line_ending):
         self.opt['line_ending'] = line_ending
@@ -85,8 +98,8 @@ class Docblock(object):
             # remove all the leftovers
             docblock = re.sub('%[a-zA-Z]+%\n?', '', docblock).strip()
             
-            # return pretty docblock plus a range of text to select
-            return self.formatDocblock(docblock, whitespace), None
+            # return pretty docblock
+            return self.formatDocblock(docblock, whitespace)
     
     def formatDocblock(self, docblock, whitespace):
         # clean up white space and line endings
@@ -98,7 +111,7 @@ class Docblock(object):
         if self.opt['suffix']:
             lines.append(self.opt['suffix'])
         
-        return self.opt['line_ending'].join([whitespace + s for s in lines])
+        return self.opt['line_ending'].join([whitespace + s for s in lines]) + self.opt['line_ending']
         # return self.opt['line_ending'].join(map(lambda s: whitespace + s, lines))
     
     def is_float(self, s):

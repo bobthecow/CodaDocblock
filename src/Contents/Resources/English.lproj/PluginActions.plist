@@ -4,6 +4,7 @@
 <dict>
 	<key>PluginActions</key>
 	<dict>
+<!--
 		<key>Generate Docblock</key>
 		<dict>
 			<key>action</key>
@@ -11,6 +12,7 @@
 			<key>shortcut</key>
 			<string>^$d</string>
 		</dict>
+-->
 		<key>Generate PHP Docblock</key>
 		<dict>
 			<key>action</key>
@@ -20,7 +22,10 @@
 				<key>lang</key>
 				<string>php</string>
 			</dict>
+			<key>shortcut</key>
+			<string>^$d</string>
 		</dict>
+<!--
 		<key>Generate Python Docblock</key>
 		<dict>
 			<key>action</key>
@@ -37,6 +42,7 @@
 			<key>requireSelection</key>
 			<true/>
 		</dict>
+-->
 	</dict>
 </dict>
 </plist>
