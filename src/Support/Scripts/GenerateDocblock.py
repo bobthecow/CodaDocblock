@@ -1,7 +1,5 @@
 '''A (PHP) Docblock generator plugin for Coda'''
 
-import tea_actions as tea
-import line_actions as line
 import cp_actions as cp
 from Docblock import Docblock
 
@@ -13,9 +11,9 @@ def act(controller, bundle, options):
     (which might not be such a bad thing...)
     '''
     
-    context = tea.get_context(controller)
+    context = cp.get_context(controller)
 
-    lang = tea.get_option(options, 'lang', 'auto').lower()
+    lang = cp.get_option(options, 'lang', 'auto').lower()
     
     # get the file extension so we can guess the language.
     if lang == 'auto':
@@ -28,12 +26,12 @@ def act(controller, bundle, options):
     d = Docblock.get(lang)
     
     # get the current line
-    text, target_range = line.get_line_range(context)
+    text, target_range = cp.lines_and_range(context)
     
     # keep going until we find a non-empty line to document (up to X lines below the current line)
     tries_left = 3
     while tries_left and not text.strip():
-        text, target_range = line.get_line_after_and_range(context, target_range)
+        text, target_range = cp.get_line_after_and_range(context, target_range)
         
         if text is None:
             # we're at the end of the document?
@@ -42,9 +40,9 @@ def act(controller, bundle, options):
         
         tries_left -= 1
     
-    insert_range = tea.new_range(target_range.location, 0)
+    insert_range = cp.new_range(target_range.location, 0)
     
-    d.setLineEnding(tea.get_line_ending(context))
+    d.setLineEnding(cp.get_line_ending(context))
     docblock = d.doc(text)
     
     if docblock:
