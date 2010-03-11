@@ -19,6 +19,10 @@ def end_is_line_ending(content, line_ending):
 
 
 def get_line_before(context, range = None):
+    line, line_range = get_line_before_and_range(context, range)
+    return line
+
+def get_line_before_and_range(context, range = None):
     '''Get the full line immediately before the current (or supplied) range'''
     line_ending = get_line_ending(context)
     if range is None: range = get_range(context)
@@ -38,11 +42,15 @@ def get_line_before(context, range = None):
     
     start = max(0, start)
     end = min(end, len(content))
+    line_range = new_range(start, end - start)
     
-    return get_selection(context, new_range(start, end - start))
-
+    return get_selection(context, line_range), line_range
 
 def get_line_after(context, range = None):
+    line, line_range = get_line_after_and_range(context, range)
+    return line
+
+def get_line_after_and_range(context, range = None):
     '''Get the full line immediately after the current (or supplied) range'''
     line_ending = get_line_ending(context)
     len_line_ending = len(line_ending)
@@ -66,9 +74,9 @@ def get_line_after(context, range = None):
     
     start = max(0, start)
     end = min(end, len(content))
+    line_range = new_range(start, end - start)
     
-    return get_selection(context, new_range(start, end - start))
-
+    return get_selection(context, line_range), line_range
 
 def lines_and_range(context, range = None):
     '''Get the range of the full lines containing the current (or supplied) range'''
