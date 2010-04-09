@@ -20,4 +20,3 @@ from Textile or Markdown or reStructuredText to HTML and back. It's pretty hot.
    [1]: http://panic.com/coda/
    [2]: http://github.com/bobthecow/coda-plugin
    [3]: http://onecrayon.com/tea/coda/
-
