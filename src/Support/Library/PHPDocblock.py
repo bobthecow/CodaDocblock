@@ -178,12 +178,9 @@ class PHPDocblock(Docblock):
             return 'mixed'
         elif '"' in s or "'" in s:
             return 'string'
-        # elif s.find('"') > -1 or s.find("'") > -1:
         elif 'array(' in s:
-        # elif s.find('array(') > -1:
             return 'array'
-        elif 'true' in s or 'false' in s:
-        # elif s.find('true') > -1 or s.find('false') > -1:
+        elif s.strip() in ['true', 'false']:
             return 'bool'
         elif s.isdigit():
             return 'int'
