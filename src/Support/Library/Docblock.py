@@ -140,18 +140,18 @@ class Docblock(object):
         
         ret = []
         
-        for p in s.split(','):
-            chunks = p.split('=')
+        for param_name in [p.strip() for p in s.split(',')]:
+            default = None
+            param_type = 'mixed'
             
-            param_name = chunks[0].strip()
+            if "=" in param_name:
+                (param_name, default) = [chunk.strip() for chunk in param_name.split("=", 1)]
             
             if not param_name: return
             
-            param_type = 'mixed'
-            default = None
-            
-            if len(chunks) > 1:
-                default = chunks[1].strip()
+            if " " in param_name:
+                (param_type, param_name) = [chunk.strip() for chunk in param_name.split(" ", 1)]
+            elif default is not None:
                 param_type = self.guessType(default)
             
             if default is not None:
