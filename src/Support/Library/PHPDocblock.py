@@ -178,7 +178,7 @@ class PHPDocblock(Docblock):
             return 'mixed'
         elif '"' in s or "'" in s:
             return 'string'
-        elif 'array(' in s:
+        elif 'array(' in s.replace(' ', ''):
             return 'array'
         elif s.strip() in ['true', 'false']:
             return 'bool'
