@@ -8,14 +8,14 @@ text = text.encode('ascii', 'html_replace')
 '''
 
 import codecs
-from htmlentitydefs import codepoint2name
+import htmlentitydefs as html
 
 def html_replace(text):
     if isinstance(text, (UnicodeEncodeError, UnicodeTranslateError)):
         s = []
         for c in text.object[text.start:text.end]:
-            if ord(c) in codepoint2name:
-                s.append(u'&%s;' % codepoint2name[ord(c)])
+            if ord(c) in html.codepoint2name:
+                s.append(u'&%s;' % html.codepoint2name[ord(c)])
             else:
                 s.append(u'&#%s;' % ord(c))
         return ''.join(s), text.end
