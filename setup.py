@@ -18,6 +18,7 @@ info = dict(
     CFBundleIdentifier = 'com.justinhileman.codaplugin',
     NSHumanReadableCopyright = '(c) 2009 Ian Beck under the MIT license',
     CodaPlugInMinimumAPIVersion = '4',
+    CodaPlugInSupportedAPIVersion = '6',
 )
 
 # === You prob'ly won't need to change anything past this point ===
@@ -54,6 +55,7 @@ setup(
     plugin = ['CodaPlugin.py'],
     data_files = includes,
     options = dict(py2app = dict(
+        plist = info,
         extension = '.codaplugin',
         semi_standalone = True,
         site_packages = True,
