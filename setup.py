@@ -18,6 +18,7 @@ info = dict(
     CFBundleIdentifier = 'com.justinhileman.codaplugin',
     NSHumanReadableCopyright = '(c) 2009 Ian Beck under the MIT license',
     CodaPlugInMinimumAPIVersion = '4',
+    CodaPlugInSupportedAPIVersion = '6',
 )
 
 # === You prob'ly won't need to change anything past this point ===

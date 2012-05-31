@@ -8,7 +8,7 @@
 
 @class CodaTextView;
 
-@interface CodaPlugInsController : NSObject 
+@interface CodaPlugInsController : NSObject
 {
 	NSMutableArray*			plugins;
 	NSMutableDictionary*	loadedMenuItemsDict;
@@ -20,37 +20,46 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
+// Returns one of the following API versions:
+//
+// Coda Version  API Version
+// -------------------------
+// Coda 1.6      2
+// Coda 1.6.1    3
+// Coda 1.6.3    4
+// Coda 1.6.8    5
+// Coda 2.0      5
+// Coda 2.0.1    6
+
+- (int)apiVersion;
+
+
 // Returns the version of Coda that is hosting the plugin, such as "1.6.3"
 
 - (NSString*)codaVersion:(id)sender;
 
 
-// Returns to the plugin an abstract object representing the text view in Coda 
+// Displays the provided HTML in a new tab.
+
+- (void)displayHTMLString:(NSString*)html;
+
+
+// Returns to the plugin an abstract object representing the text view in Coda
 // that currently has focus
 
 - (CodaTextView*)focusedTextView:(id)sender;
-
-
-// Exposes to the user a plug-in action (a menu item) with the given title, that 
-// will perform the given selector on the target
-
-- (void)registerActionWithTitle:(NSString*)title target:(id)target selector:(SEL)selector;
-
-
-// Returns 4 as of Coda 1.6.3.
-
-- (int)apiVersion;
-
-
-// Displays the provided HTML in a new tab. 
-
-- (void)displayHTMLString:(NSString*)html;
 
 
 // Creates a new unsaved document in the frontmost Coda window and returns the Text View associated with it.
 // The text view provided is auto-released, so the caller does not need to explicitly release it.
 
 - (CodaTextView*)makeUntitledDocument;
+
+
+// Exposes to the user a plug-in action (a menu item) with the given title, that
+// will perform the given selector on the target
+
+- (void)registerActionWithTitle:(NSString*)title target:(id)target selector:(SEL)selector;
 
 
 // Similar to registerActionWithTitle:target:selector: but allows further customization of the registered
@@ -69,11 +78,29 @@
 
 - (void)saveAll;
 
+
+////////////////////////////////////////////////////////////////////////////////
+// The following methods are available to plugin developers	in Coda 2.0 and   //
+// later:																	  //
+////////////////////////////////////////////////////////////////////////////////
+
+
+// Creates a new preview tab in Coda and displays the rendered version of the
+// passed HTML, relative to the specified base URL.
+
+- (void)displayHTMLString:(NSString*)html baseURL:(NSURL*)baseURL;
+
+
+// Opens the text file at path, returning a CodaTextView if successful.
+
+- (CodaTextView*)openFileAtPath:(NSString*)path error:(NSError**)error;
+
+
 @end
 
 
-// 
-// This is your hook to a text view in Coda. You can use this to provide 
+//
+// This is your hook to a text view in Coda. You can use this to provide
 // manipulation of files.
 //
 
@@ -113,7 +140,7 @@
 
 - (void)setSelectedRange:(NSRange)range;
 
-// Returns a string containing the entire content of the line that the insertion 
+// Returns a string containing the entire content of the line that the insertion
 // point is on
 
 - (NSString*)currentLine;
@@ -140,7 +167,7 @@
 - (NSRange)rangeOfCurrentLine;
 
 
-// StartOfLine returns the character index (relative to the beginning of the 
+// StartOfLine returns the character index (relative to the beginning of the
 // document) of the start of the line the insertion point is on
 
 - (unsigned int)startOfLine;
@@ -166,7 +193,7 @@
 - (NSRange)previousWordRange;
 
 
-// UsesTabs returns if the editor is currently uses tabs instead of spaces for 
+// UsesTabs returns if the editor is currently uses tabs instead of spaces for
 // indentation
 
 - (BOOL)usesTabs;
@@ -175,7 +202,7 @@
 
 - (void)save;
 
-// Saves the document you are working on to a local path, returns YES if 
+// Saves the document you are working on to a local path, returns YES if
 // successful
 
 - (BOOL)saveToPath:(NSString*)aPath;
@@ -197,7 +224,7 @@
 - (NSString*)path;
 
 
-// Returns the root local path of the site if specified (nil if unspecified in 
+// Returns the root local path of the site if specified (nil if unspecified in
 // the site or site is not loaded)
 
 - (NSString*)siteLocalPath;
@@ -218,19 +245,19 @@
 // later.																	  //
 ////////////////////////////////////////////////////////////////////////////////
 
-// Returns the URL of the site if specified (nil if unspecified in 
-// the site or site is not loaded) 
+// Returns the URL of the site if specified (nil if unspecified in
+// the site or site is not loaded)
 
 - (NSString*)siteURL;
 
 
-// Returns the local URL of the site if specified (nil if unspecified in 
+// Returns the local URL of the site if specified (nil if unspecified in
 // the site or site is not loaded)
 
 - (NSString*)siteLocalURL;
 
 
-// Returns the root remote path of the site if specified (nil if unspecified in 
+// Returns the root remote path of the site if specified (nil if unspecified in
 // the site or site is not loaded)
 
 - (NSString*)siteRemotePath;
@@ -239,6 +266,43 @@
 // Returns the nickname of the site if specified (nil if site is not loaded)
 
 - (NSString*)siteNickname;
+
+
+////////////////////////////////////////////////////////////////////////////////
+// The following methods are available to plugin developers in Coda 2.0 and   //
+// later.																	  //
+////////////////////////////////////////////////////////////////////////////////
+
+
+// Moves insertion point to specified line and column, scrolling them to be visible if needed.
+
+- (void)goToLine:(NSInteger)line column:(NSInteger)column;
+
+
+// Returns the Remote URL for the file given the site configuration.
+
+- (NSString*)remoteURL;
+
+
+// Called when a text view is focused/opened.
+//
+// NOTE: This method is time sensitive and should return quickly.
+
+- (void)textViewDidFocus:(CodaTextView*)textView;
+
+
+// Called before the text view will be saved to disk.
+
+- (void)textViewWillSave:(CodaTextView*)textView;
+
+
+// This delegate method gives the plugin a chance to modify files just before publishing.
+// Return the path to the file to publish. WARNING: this method will be called on a non-main thread.
+
+- (NSString*)willPublishFileAtPath:(NSString*)inputPath;
+
+
+
 
 
 @end
@@ -259,6 +323,18 @@
 // Return a name to display in the plug-ins menu
 
 - (NSString*)name;
+
+
+////////////////////////////////////////////////////////////////////////////////
+// The following methods are available to plugin developers in Coda 2.0.1 and //
+// later.																	  //
+////////////////////////////////////////////////////////////////////////////////
+
+
+// This allows Coda to load your plug-in more quickly on versions 2.0.1 and higher.
+
+- (id)initWithPlugInController:(CodaPlugInsController*)aController plugInBundle:(NSObject <CodaPlugInBundle>*)plugInBundle;
+
 
 @end
 
