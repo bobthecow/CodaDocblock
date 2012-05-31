@@ -54,6 +54,7 @@ setup(
     plugin = ['CodaPlugin.py'],
     data_files = includes,
     options = dict(py2app = dict(
+        plist = info,
         extension = '.codaplugin',
         semi_standalone = True,
         site_packages = True,
