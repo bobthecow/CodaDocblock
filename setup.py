@@ -59,6 +59,5 @@ setup(
         extension = '.codaplugin',
         semi_standalone = True,
         site_packages = True,
-        plist=info,
     )),
 )
