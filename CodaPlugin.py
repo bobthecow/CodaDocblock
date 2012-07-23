@@ -26,6 +26,9 @@ class Docblock(NSObject, CodaPlugIn):
     # Change this to disable automatic sorting of menu items:
     sort_menu_items = True
 
+    def initWithPlugInController_plugInBundle_(self, controller, bundle):
+        self.initWithPlugInController_bundle_(controller, bundle)
+
     def initWithPlugInController_bundle_(self, controller, bundle):
         '''Required method; run when the plugin is loaded'''
         self = super(self.__class__, self).init()

@@ -36,7 +36,7 @@ def get_line_before_and_range(context, range = None):
 
     end = content.rfind(line_ending, 0, range.location)
     if end == -1:
-        return None
+        return None, range
     else:
         end = end + len(line_ending)
     
@@ -68,7 +68,7 @@ def get_line_after_and_range(context, range = None):
     if not is_line_ending(content, start - len_line_ending, line_ending):
         start = content.find(line_ending, start)
         if start == -1:
-            return None
+            return None, range
         else:
             start += len_line_ending
     
