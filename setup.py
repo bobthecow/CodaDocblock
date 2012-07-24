@@ -14,7 +14,7 @@ plugin_name = 'Docblock'
 
 # Update this info by hand; defines the required Info.plist elements
 info = dict(
-    CFBundleVersion = '1.2.0',
+    CFBundleVersion = '1.2.1',
     CFBundleIdentifier = 'com.justinhileman.Docblock',
     NSHumanReadableCopyright = '(c) 2011 Justin Hileman',
     CodaPlugInMinimumAPIVersion = '4',
