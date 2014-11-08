@@ -14,11 +14,15 @@ plugin_name = 'Docblock'
 
 # Update this info by hand; defines the required Info.plist elements
 info = dict(
-    CFBundleVersion = '1.2.1',
+    CodaAuthorString = 'Justin Hileman',
+    CodaDescriptionString = 'Generate PHP Docblocks like magick!',
+    CFBundleVersion = '2.0.0',
     CFBundleIdentifier = 'com.justinhileman.Docblock',
-    NSHumanReadableCopyright = '(c) 2011 Justin Hileman',
+    NSHumanReadableCopyright = '(c) 2011-2014 Justin Hileman',
     CodaPlugInMinimumAPIVersion = '4',
     CodaPlugInSupportedAPIVersion = '6',
+    CodaPlugInRequiresInitOnMainThread = True,
+    LSMinimumSystemVersion = '1.6',
 )
 
 # === You prob'ly won't need to change anything past this point ===
@@ -55,9 +59,9 @@ setup(
     plugin = ['CodaPlugin.py'],
     data_files = includes,
     options = dict(py2app = dict(
-        plist = info,
         extension = '.codaplugin',
         semi_standalone = True,
         site_packages = True,
+        plist = info,
     )),
 )

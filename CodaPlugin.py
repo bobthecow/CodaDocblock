@@ -130,7 +130,10 @@ class Docblock(NSObject, CodaPlugIn):
             target = mod.__dict__[actionname].alloc().init()
         else:
             target = mod
-        target.act(self.controller, self.bundle, sender.representedObject().objectForKey_('options'))
+        try:
+            target.act(self.controller, self.bundle, sender.representedObject().objectForKey_('options'))
+        except Exception, e:
+            NSLog('Docblock error: %s' % str(e))
 
     def register_action(self, controller, action, title):
         if 'action' not in action:
