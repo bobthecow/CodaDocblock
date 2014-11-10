@@ -86,7 +86,17 @@ class PHPDocblock(Docblock):
                     'extends': 'extendsCallback',
                 }
             },
-            
+
+            'trait': {
+                'pattern': '^(?P<whitespace>\s*)trait\s+(?P<name>[-a-zA-Z0-9_]+)',
+                'template':
+                     """
+                     $$IP$$%name% trait$$.
+                     """,
+                'callbacks': {
+                }
+            },
+
             'member_variable': {
                 'pattern': '(?P<whitespace>\s*)(?:(?:(?P<abstract>abstract)|(?P<static>static)|(?P<final>final)|(?P<access>private|public|protected))\s+)*(?:var\s+)?\$(?P<name>[-a-zA-Z0-9_]+)(?:\s*=\s*(?P<value>[^;]+);)?',
                 'template':
