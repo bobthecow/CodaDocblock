@@ -31,7 +31,7 @@ class PHPDocblock(Docblock):
         
         'signatures': {
             'function': {
-                'pattern': '^(?P<whitespace>\s*)(?:(?:(?P<abstract>abstract)|(?P<final>final)|(?P<static>static)|(?P<access>private|public|protected))\s+)*function\s*&?(?P<name>[-a-zA-Z0-9_]+)\s*\((?P<params>.*)\)\s*(?:{.*}?|;)?\s*$',
+                'pattern': '^(?P<whitespace>\s*)(?:(?:(?P<abstract>abstract)|(?P<final>final)|(?P<static>static)|(?P<access>private|public|protected))\s+)*function\s*&?(?P<name>[-a-zA-Z0-9_]+)\s*\((?P<params>.*)\)\s*(?:{.*}?|;)?\s*:?\s*(?P<return>[-a-zA-Z0-9_]+)?\s*$',
                 'template':
                     """
                     $$IP$$%name% function$$.
@@ -41,7 +41,7 @@ class PHPDocblock(Docblock):
                     %static%
                     %final%
                     %params%
-                    @return void
+                    %return%
                     """,
                 'callbacks': {
                     'access':   'accessCallback',
@@ -49,6 +49,7 @@ class PHPDocblock(Docblock):
                     'final':    'keywordCallback',
                     'static':   'keywordCallback',
                     'params':   'paramsCallback',
+                    'return':   'returnCallback',
                 }
             },
             
@@ -124,7 +125,13 @@ class PHPDocblock(Docblock):
         if not s:
             s = self.guessAccess()
         return "%saccess %s" % (self.opt['command'], s)
-    
+
+    def returnCallback(self, s):
+        if not s:
+            s = 'void'
+
+        return "%sreturn %s" % (self.opt['command'], s)
+
     def guessAccess(self, name = None):
         if not name:
             if not 'name' in self.matches:

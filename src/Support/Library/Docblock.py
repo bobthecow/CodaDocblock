@@ -106,7 +106,7 @@ class Docblock(object):
         lines = []
         if self.opt['prefix']:
             lines.append(self.opt['prefix'])
-        lines += [self.opt['infix'] + s for s in docblock.split('\n')]
+        lines += [(self.opt['infix'] + s).rstrip() for s in docblock.split('\n')]
         # lines.extend(map(lambda s: self.opt['infix'] + s, docblock.split('\n')))
         if self.opt['suffix']:
             lines.append(self.opt['suffix'])
